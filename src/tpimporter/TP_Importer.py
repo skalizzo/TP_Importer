@@ -7,7 +7,8 @@ from typing import List, Dict
 
 
 class TP_Importer():
-    def __init__(self):
+    def __init__(self, valid_statuses=("ok", "change", "new")):
+        self.valid_statuses = valid_statuses
         self.tp_map = {
             "status": 0,
             "did": 1,
@@ -45,6 +46,8 @@ class TP_Importer():
             "country_lie": 60,
             "right_est": 45,
             "right_tvod": 49,
+            "right_svod": 52,
+            "right_avod": 55,
             "premium_vod_start": 64,
             "premium_vod_end": 65,
             "premium_vod_price_tier": 66,
@@ -61,7 +64,8 @@ class TP_Importer():
             "pf_status_sony": 86,
             "pf_status_ondemand": 99,
             "studio": 108,
-            "vendor_id_itunes": 118,
+            "vendor_id": 118,
+            "vendor_id_itunes": 120,
             "vendor_id_google": 133,
             "vendor_id_amazon": 151,
             "vendor_id_microsoft": 129,
@@ -108,6 +112,15 @@ class TP_Importer():
             "wsp_special_amazon_tvod_sd": 315,
             "wsp_special_amazon_tvod_hd": 316,
             "wsp_special_amazon_tvod_4k": 317,
+            "pricetier_initial_itunes_est_sd_de": 195,
+            "pricetier_initial_itunes_est_hd_de": 196,
+            "pricetier_initial_itunes_est_sd_ch": 228,
+            "pricetier_initial_itunes_est_hd_ch": 229,
+            "pricetier_1streprice_itunes_est_sd_de": 238,
+            "pricetier_1streprice_itunes_est_hd_de": 239,
+            "pricetier_1streprice_itunes_est_sd_ch": 250,
+            "pricetier_1streprice_itunes_est_hd_ch": 251,
+            "channel_type": 0, #wird nicht aus Excel gelesen
         }
 
     def callback_status(self, status: str):
@@ -126,20 +139,14 @@ class TP_Importer():
         """
         print(progress)
 
-    def import_TP(self, path) -> List[Dict]:
+    def get_tp_data_from_file(self, path) -> List[Dict]:
         """
         imports the Titelplanung xlsm from a given filepath (String or Path)
         :param path: filepath (String or Path)
         :return: a list of dicts (one dict per title)
         """
-        self.callback_status('reading data from TP')
-        self.callback_progress(0)
         wb = self._load_workbook(path)
-        self.callback_progress(20)
-        tp_data = self._get_data_from_wb(wb)
-        self.callback_progress(100)
-        self.callback_status('reading data from TP - COMPLETE')
-        return tp_data
+        return self._get_data_from_wb(wb)
 
     def _load_workbook(self, path) -> Workbook:
         """
@@ -148,6 +155,8 @@ class TP_Importer():
         :return:
         """
         try:
+            self.callback_status('reading data from TP')
+            self.callback_progress(0)
             wb = load_workbook(path, read_only=True, data_only=True, keep_vba=False, keep_links=False)
         except:
             # falls das Excel File passwortgeschützt ist schlägt der erste Versuch fehl;
@@ -156,32 +165,45 @@ class TP_Importer():
             self._removePasswordFromExcelFile(path, 'uf', TEMP_NAME)
             self.callback_status('reading data from TP')
             wb = load_workbook(TEMP_NAME, read_only=True, data_only=True)
+        self.callback_progress(20)
         return wb
 
-    def _get_data_from_wb(self, workbook: Workbook, first_row: int=8):
+    def _get_data_from_wb(self,
+                          workbook: Workbook,
+                          first_row: int = 8,
+                          worksheet_name: str = "TP",
+                          channel_type='transactional') -> List[Dict]:
         """
         fetches data from the given Excel Workbook instance
-        :param workbook:
-        :param first_row:
+        :param workbook: a Workbook instance
+        :param first_row: the first row where we should expect the data to begin
+        :param worksheet_name: name of the worksheet that should be read
+        :param channel_type: possible values: transactional/filmtastic/arthousecnma/homeofhorror
         :return:
         """
-        ws = workbook["TP"]
         tp_data = []
+        ws = workbook[worksheet_name]
         i = first_row
         for row in ws['A' + str(first_row):'QF10000']:
             try:
                 i += 1
-                if row[self.tp_map.get('tnr')].value and row[self.tp_map.get('status')].value in (
-                        "ok", "change", "new"):
+                if row[self.tp_map.get('tnr')].value and row[self.tp_map.get('status')].value in self.valid_statuses:
                     row_data = dict()
                     for key, col_nr in self.tp_map.items():
-                        try:
-                            row_data[key] = row[col_nr].value
-                        except:
-                            row_data[key] = ""
+                        if key == 'channel_type':
+                            row_data[key] = channel_type
+                        else:
+                            try:
+                                row_data[key] = row[col_nr].value
+                            except:
+                                row_data[key] = ""
                     tp_data.append(row_data)
+
             except:
                 self.callback_status(f'ERRROR reading in row nr: {i}')
+        self.callback_progress(100)
+        self.callback_status('reading data from TP - COMPLETE')
+
         return tp_data
 
     def _getTempDirName(self, tempFileName='temp_channel.xlsm') -> os.path:
@@ -216,7 +238,6 @@ class TP_Importer():
         except:
             self.callback_status(traceback.format_exc())
 
-if __name__ == '__main__':
-    tp_data = TP_Importer().import_TP('G:\Listen\TPDD aktuell absolutiert.xlsm')
 
-    print(tp_data)
+if __name__ == '__main__':
+    tp_data = TP_Importer().get_tp_data_from_file('G:\Listen\TPDD aktuell absolutiert.xlsm')
