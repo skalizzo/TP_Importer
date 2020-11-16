@@ -1,2 +1,2 @@
-from src.tpimporter.TP_Importer import TP_Importer
-from src.tpimporter.adapters import Adapter_for_MAM
+from .TP_Importer import TP_Importer
+from .adapters.Adapter_for_MAM import Adapter_For_MAM
