@@ -1,5 +1,5 @@
-from src import TP_Importer
-from src import Adapter_For_MAM
+from src.tpimporter.TP_Importer import TP_Importer
+from src.tpimporter.adapters.Adapter_for_MAM import Adapter_For_MAM
 
 def import_tp_data_for_mam():
     tp_path = "G:\Listen\TPDD aktuell absolutiert.xlsm"
@@ -10,4 +10,4 @@ def import_tp_data_for_mam():
 
 
 if __name__ == '__main__':
-    import_tp_data_for_mam()
+    tp_data_mam = import_tp_data_for_mam()
