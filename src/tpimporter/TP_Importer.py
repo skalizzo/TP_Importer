@@ -7,6 +7,9 @@ from typing import List, Dict
 
 
 class TP_Importer():
+    callback_status_signal = None
+    callback_progress_signal = None
+
     def __init__(self, valid_statuses=("ok", "change", "new")):
         self.valid_statuses = valid_statuses
         self.tp_map = {
@@ -123,13 +126,26 @@ class TP_Importer():
             "channel_type": 0, #wird nicht aus Excel gelesen
         }
 
+
+    def register_callback_signals(self, callback_status_signal=None, callback_progress_signal=None):
+        self.callback_status_signal = callback_status_signal
+        self.callback_progress_signal = callback_progress_signal
+
+
+
     def callback_status(self, status: str):
         """
         a callback function that reports status updates - should be overwritten when subclassing this class
         :param status: str
         :return:
         """
-        print(status)
+        if self.callback_status_signal:
+            try:
+                self.callback_status_signal.emit(status)
+            except:
+                print(traceback.format_exc())
+        else:
+            print(status)
 
     def callback_progress(self, progress: int):
         """
@@ -137,7 +153,13 @@ class TP_Importer():
         :param progress: int
         :return:
         """
-        print(progress)
+        if self.callback_progress_signal:
+            try:
+                self.callback_progress_signal.emit(progress)
+            except:
+                print(traceback.format_exc())
+        else:
+            print(progress)
 
     def get_tp_data_from_file(self, path) -> List[Dict]:
         """
@@ -203,7 +225,6 @@ class TP_Importer():
                 self.callback_status(f'ERRROR reading in row nr: {i}')
         self.callback_progress(100)
         self.callback_status('reading data from TP - COMPLETE')
-
         return tp_data
 
     def _getTempDirName(self, tempFileName='temp_channel.xlsm') -> os.path:
