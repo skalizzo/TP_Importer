@@ -78,6 +78,7 @@ class Adapter_For_MAM():
         "Amazon_Status": "pf_status_amazon",
         "channel_type": "channel_type",  # muss implementiert werden
         "mandant": "mandant",
+        "deal_type": "deal_type",
     }
 
     def transform(self, tp_data: List[Dict]) -> List[Dict]:
