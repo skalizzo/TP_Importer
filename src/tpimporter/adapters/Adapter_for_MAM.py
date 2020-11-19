@@ -53,7 +53,7 @@ class Adapter_For_MAM():
         "TVOD": "right_tvod",
         "SVOD": "right_svod",
         "AVOD": "right_avod",
-        "Release_Type": "release_origin",
+        "Release_Type": "release_actuality",
         "ESTEnde": "est_end",
         "TVODEnde": "tvod_end",
         "PVODEnde": "premium_vod_end",
