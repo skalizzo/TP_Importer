@@ -1,11 +1,11 @@
-from typing import List, Dict
+from .Basic_Adapter import Basic_Adapter
 
 
-class Adapter_For_MAM():
+class Adapter_For_MAM(Basic_Adapter):
     """
     a class used to alter the keys from the TP import so that the data can be used within MAM
     """
-    mam_to_importer_dict = {
+    transformer_dict = {
         "Tnr": "tnr",
         "tnr2": "tnr",
         "d_id": "did",
@@ -80,17 +80,3 @@ class Adapter_For_MAM():
         "mandant": "mandant",
         "deal_type": "deal_type",
     }
-
-    def transform(self, tp_data: List[Dict]) -> List[Dict]:
-        """
-        transforms the given dictionaries to a form defined in the class variable
-        :param tp_data: a list of dictionaries coming from the TP-Importer
-        :return: List[Dict] (with adapted keys fitting the specific service)
-        """
-        tp_data_mam = []
-        for title in tp_data:
-            title_dict_mam = dict()
-            for key_mam, key_tpimporter in self.mam_to_importer_dict.items():
-                title_dict_mam[key_mam] = title.get(key_tpimporter)
-            tp_data_mam.append(title_dict_mam)
-        return tp_data_mam
