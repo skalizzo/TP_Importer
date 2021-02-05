@@ -80,3 +80,10 @@ class Adapter_For_MAM(Basic_Adapter):
         "mandant": "mandant",
         "deal_type": "deal_type",
     }
+    metadata_dict = {
+        'IMDBlink': 'imdb_link',
+        'ISAN': 'isan',
+        'EIDR': 'eidr',
+        'Titel': 'titel_local',
+        'Originaltitel': 'titel_ov',
+    }

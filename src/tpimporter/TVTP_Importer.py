@@ -4,7 +4,7 @@ from typing import List, Dict
 
 
 
-class TP_Importer(Excel_Importer):
+class TVTP_Importer(Excel_Importer):
     callback_status_signal = None
     callback_progress_signal = None
     tp_map = {
@@ -88,7 +88,6 @@ class TP_Importer(Excel_Importer):
         "full_delete_poest": 141,
         "isan": 170,
         "imdb_link": 175,
-        "eidr": 176,
         "pricing_initial_4k_de": 179,
         "pricing_initial_4k_ch": 180,
         "pricing_1streprice_4k_de": 183,
