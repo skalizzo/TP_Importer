@@ -17,6 +17,7 @@ class TP_Importer(Excel_Importer):
         "deal_type": 9,
         "info_link": 11,
         "mandant": 12,
+        "trailer_link": 11,
         "vertrieb_physisch": 13,
         "release_actuality": 15,
         "release_origin": 16,
