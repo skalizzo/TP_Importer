@@ -144,8 +144,12 @@ class TP_Importer(Excel_Importer):
         tp_data = []
         ws = workbook[worksheet_name]
         i = first_row
-        for row in ws['A' + str(first_row):'QF10000']:
+        max_row = ws.max_row
+        print('max_row:', max_row)
+        for row in ws['A' + str(first_row):'QF' + str(max_row)]:
             try:
+                # progress (20 % schon nach öffnen erreicht)
+                self.callback_progress(20 + int(i / max_row * 80))
                 i += 1
                 if row[self.tp_map.get('tnr')].value and row[self.tp_map.get('status')].value in self.valid_statuses:
                     row_data = dict()
