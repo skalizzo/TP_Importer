@@ -7,6 +7,7 @@ class Adapter_For_MAM(Basic_Adapter):
     """
     transformer_dict = {
         "Tnr": "tnr",
+        "tnr_rechtefluss":"tnr_rechtefluss",
         "tnr2": "tnr",
         "d_id": "did",
         "Status_TP": "status",

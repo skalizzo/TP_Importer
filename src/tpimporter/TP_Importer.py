@@ -12,6 +12,7 @@ class TP_Importer(Excel_Importer):
         "did": 1,
         "tnr": 2,
         "titel_local": 3,
+        "tnr_rechtefluss": 4,
         "titel_ov": 6,
         "lg": 7,
         "deal_type": 9,
