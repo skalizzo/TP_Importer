@@ -79,6 +79,15 @@ class TVTP_Importer(Excel_Importer):
     def __init__(self, valid_statuses=("ok", "change", "new")):
         super().__init__(valid_statuses)
 
+    def get_tp_data_from_file(self, path) -> Dict:
+        """
+        imports the Titelplanung xlsm from a given filepath (String or Path)
+        :param path: filepath (String or Path)
+        :return: a list of dicts (one dict per title)
+        """
+        wb = self._load_workbook(path)
+        return self._get_data_from_wb(wb)
+
     def _get_data_from_wb(self,
                           workbook: Workbook,
                           first_row: int = 4,
