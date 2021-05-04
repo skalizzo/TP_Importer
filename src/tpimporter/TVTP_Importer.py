@@ -24,6 +24,7 @@ class TVTP_Importer(Excel_Importer):
         "tnr": 1,
         "titel_local": 6,
         "number": 7,
+        "deal_type": 15,
         "mandant": 27,
         "est_start": 37,
         "genre": 19,
