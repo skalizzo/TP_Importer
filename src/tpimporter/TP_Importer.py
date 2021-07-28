@@ -125,6 +125,9 @@ class TP_Importer(Excel_Importer):
         "pricetier_1streprice_itunes_est_sd_ch": 250,
         "pricetier_1streprice_itunes_est_hd_ch": 251,
         "channel_type": 0,  # wird nicht aus Excel gelesen
+        "marketing_commitment_sky": 33,
+        "marketing_commitment_videoload": 34,
+        "pf_specific_id_sky": 121,
     }
 
     def __init__(self, valid_statuses=("ok", "change", "new")):
