@@ -82,6 +82,7 @@ class Adapter_For_MAM(Basic_Adapter):
         "channel_type": "channel_type",  # muss implementiert werden
         "mandant": "mandant",
         "deal_type": "deal_type",
+        "theatrical_admissions": "theatrical_admissions",
     }
     metadata_dict = {
         "VendorID": "vendor_id",
