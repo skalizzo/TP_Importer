@@ -22,12 +22,14 @@ class test_TPImporter(unittest.TestCase):
                 self.assertEqual(type(season), dict)
                 self.assertTrue('vendor_id' in season.keys())
                 self.assertTrue('episodes' in season.keys())
+                self.assertTrue('est_end' in season.keys())
                 for vendor_id_episode, episode in season.get('episodes').items():
                     num_episodes += 1
                     #print(episode)
                     self.assertEqual(type(episode), dict)
                     self.assertTrue('vendor_id' in episode.keys())
                     self.assertTrue('titel_local' in episode.keys())
+                    self.assertTrue('tvod_start' in episode.keys())
         print(num_series, num_seasons, num_episodes)
 
 
