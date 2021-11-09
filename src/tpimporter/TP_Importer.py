@@ -1,6 +1,6 @@
-from .Excel_Importer import Excel_Importer
 from openpyxl import Workbook
 from typing import List, Dict
+from .Excel_Importer import Excel_Importer
 
 
 
@@ -164,8 +164,8 @@ class TP_Importer(Excel_Importer):
                         if key == 'channel_type':
                             row_data[key] = channel_type
                         elif key == 'vendor_id_alleskino':
-                            if row['vendor_id']:
-                                row_data[key] = row['vendor_id'].value + "_AK"
+                            if row[self.tp_map.get('vendor_id')].value:
+                                row_data[key] = str(row[self.tp_map.get('vendor_id')].value) + "_AK"
                             else:
                                 row_data[key] = ""
                         else:
@@ -184,3 +184,4 @@ class TP_Importer(Excel_Importer):
 
 if __name__ == '__main__':
     tp_data = TP_Importer().get_tp_data_from_file('G:\Listen\TPDD aktuell absolutiert.xlsm')
+    print(tp_data)

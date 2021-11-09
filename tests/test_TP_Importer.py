@@ -12,7 +12,8 @@ class test_TPImporter(unittest.TestCase):
         for title in tp_data:
             self.assertEqual(type(title), dict)
             self.assertTrue('vendor_id_amazon' in title.keys())
-            
+            self.assertTrue('vendor_id_alleskino' in title.keys())
+
     def test_get_transformed_data(self):
         importer = TP_Importer()
         tp_data = importer.get_tp_data_from_file(path='G:\Listen\TPDD aktuell absolutiert.xlsm')

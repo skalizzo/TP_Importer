@@ -6,7 +6,7 @@ import msoffcrypto
 from typing import List, Dict
 
 
-class Excel_Importer():
+class Excel_Importer:
     """
     basic class to transform excel files to a list of dictionaries;
     tp_map must be a dictionary with the following structure:
