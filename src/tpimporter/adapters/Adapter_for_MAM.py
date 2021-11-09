@@ -52,6 +52,8 @@ class Adapter_For_MAM(Basic_Adapter):
         "DE": "country_de",
         "AT": "country_at",
         "CH": "country_ch",
+        "LUX": "country_lux",
+        "LIE": "country_lie",
         "EST": "right_est",
         "TVOD": "right_tvod",
         "SVOD": "right_svod",
