@@ -45,6 +45,7 @@ class Adapter_For_MAM(Basic_Adapter):
         "VendorIDUPCCablecom": "vendor_id_cablecom",
         "VendorIDMagentaAT": "vendor_id_magenta_at",
         "VendorIDUnitymedia": "vendor_id_unitymedia",
+        "VendorIDAllesKino": "vendor_id_alleskino",
         # -----------------------
         "Prod_jahr": "production_year",
         "Prod_land": "production_country",

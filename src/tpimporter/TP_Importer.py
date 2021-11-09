@@ -87,6 +87,7 @@ class TP_Importer(Excel_Importer):
         "vendor_id_cablecom": 113,
         "vendor_id_magenta_at": 112,
         "vendor_id_unitymedia": 111,
+        "vendor_id_alleskino": 0, # wird unten generiert aus VendorID
         "ov": 144,
         "full_delete": 139,
         "full_delete_4k_amazon": 140,
@@ -162,6 +163,11 @@ class TP_Importer(Excel_Importer):
                     for key, col_nr in self.tp_map.items():
                         if key == 'channel_type':
                             row_data[key] = channel_type
+                        elif key == 'vendor_id_alleskino':
+                            if row['vendor_id']:
+                                row_data[key] = row['vendor_id'].value + "_AK"
+                            else:
+                                row_data[key] = ""
                         else:
                             try:
                                 row_data[key] = row[col_nr].value
