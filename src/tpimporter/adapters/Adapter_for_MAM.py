@@ -46,6 +46,7 @@ class Adapter_For_MAM(Basic_Adapter):
         "VendorIDMagentaAT": "vendor_id_magenta_at",
         "VendorIDUnitymedia": "vendor_id_unitymedia",
         "VendorIDAllesKino": "vendor_id_alleskino",
+        "VendorIDKinoOnDemand": "vendor_id_kinoondemand",
         # -----------------------
         "Prod_jahr": "production_year",
         "Prod_land": "production_country",

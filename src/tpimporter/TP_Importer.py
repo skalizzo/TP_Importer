@@ -74,6 +74,7 @@ class TP_Importer(Excel_Importer):
         "vendor_id_microsoft": 129,
         "vendor_id_sky": 130,
         "vendor_id_sony": 131,
+        "vendor_id_kinoondemand": 132,
         "vendor_id_vodafone": 134,
         "vendor_id_maxdome": 135,
         "vendor_id_ondemand": 136,
