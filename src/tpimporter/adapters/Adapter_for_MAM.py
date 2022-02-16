@@ -97,4 +97,5 @@ class Adapter_For_MAM(Basic_Adapter):
         'Originaltitel': 'titel_ov',
         'trailer_link': 'trailer_link',
         'pf_specific_id_sky': 'pf_specific_id_sky',
+        'so_number': 'so_number',
     }

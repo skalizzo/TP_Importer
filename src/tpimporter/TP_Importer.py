@@ -130,6 +130,7 @@ class TP_Importer(Excel_Importer):
         "marketing_commitment_sky": 33,
         "marketing_commitment_videoload": 34,
         "pf_specific_id_sky": 121,
+        "so_number": 35,
     }
 
     def __init__(self, valid_statuses=("ok", "change", "new")):
@@ -171,7 +172,10 @@ class TP_Importer(Excel_Importer):
                                 row_data[key] = ""
                         else:
                             try:
-                                row_data[key] = row[col_nr].value
+                                if type(row[col_nr].value) == str:
+                                    row_data[key] = str(row[col_nr].value).strip()
+                                else:
+                                    row_data[key] = row[col_nr].value
                             except:
                                 row_data[key] = ""
                     tp_data.append(row_data)
