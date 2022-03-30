@@ -13,6 +13,8 @@ class test_TPImporter(unittest.TestCase):
             self.assertEqual(type(title), dict)
             self.assertTrue('vendor_id_amazon' in title.keys())
             self.assertTrue('vendor_id_alleskino' in title.keys())
+            self.assertTrue('premium_est_price_srp_hd' in title.keys())
+            self.assertTrue('premium_vod_price_srp_sd' in title.keys())
 
     def test_get_transformed_data(self):
         importer = TP_Importer()

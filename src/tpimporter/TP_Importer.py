@@ -50,10 +50,16 @@ class TP_Importer(Excel_Importer):
         # "right_avod": 55,
         "premium_est_start": 55,
         "premium_est_end": 56,
-        "premium_est_price_tier": 57,
+        # "premium_est_price_tier": 57, # gelöscht am 30.03.2022
+        "premium_est_price_srp_sd": 52,
+        "premium_est_price_srp_hd": 53,
+        "premium_est_price_srp_uhd": 54,
         "premium_vod_start": 64,
         "premium_vod_end": 65,
-        "premium_vod_price_tier": 66,
+        # "premium_vod_price_tier": 66, # gelöscht am 30.03.2022
+        "premium_vod_price_srp_sd": 61,
+        "premium_vod_price_srp_hd": 62,
+        "premium_vod_price_srp_uhd": 63,
         "holdback_est_start": 67,
         "holdback_est_end": 68,
         "holdback_tvod_start": 69,
