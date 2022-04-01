@@ -16,7 +16,7 @@ class TVTP_Importer(Excel_Importer):
         "vendor_id_google": 63,
         "vendor_id_videoload": 66,
         "vendor_id_hollystar": 72,
-        "so_number": 147,
+        "so_number": 154,
         "channel_type": 9999,  # wird nicht aus Excel gelesen
     }
 
@@ -69,7 +69,7 @@ class TVTP_Importer(Excel_Importer):
         "pf_status_anime_on_demand": 51,
         "pf_status_hollystar": 53,
         "first_offer_date": 30,
-        "so_number": 146,
+        "so_number": 153,
         "channel_type": 9999,  # wird nicht aus Excel gelesen
     }
 
@@ -96,7 +96,7 @@ class TVTP_Importer(Excel_Importer):
         "initialprice_wsp_itunes_sd": 76,
         "initialprice_wsp_amazon_hd": 81,
         "initialprice_wsp_amazon_sd": 80,
-        "so_number": 145,
+        "so_number": 152,
         "channel_type": 9999,  # wird nicht aus Excel gelesen
     }
 
