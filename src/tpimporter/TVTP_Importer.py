@@ -66,6 +66,8 @@ class TVTP_Importer(Excel_Importer):
         "pf_status_google": 48,
         "pf_status_videoload": 49,
         "pf_status_sky": 50,
+        "pf_status_anime_on_demand": 51,
+        "pf_status_hollystar": 53,
         "first_offer_date": 30,
         "so_number": 146,
         "channel_type": 9999,  # wird nicht aus Excel gelesen
