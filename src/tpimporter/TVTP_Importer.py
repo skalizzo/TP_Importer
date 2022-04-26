@@ -105,9 +105,13 @@ class TVTP_Importer(Excel_Importer):
 
     def get_tp_data_from_file(self, path) -> Dict:
         """
-        imports the Titelplanung xlsm from a given filepath (String or Path)
+        imports the TV-Titelplanung xlsm from a given filepath (String or Path)
         :param path: filepath (String or Path)
-        :return: a list of dicts (one dict per title)
+        :return: Dict (one entry per series with the series-Basis-VendorID as key) - die Daten zu den Staffeln
+        kann man als Liste von Dicts unter dem Key "seasons" aufrufen
+        (auch wieder als Dict mit Key = Season-Basis-VID),
+        die zu den Episoden sind im Staffel-Dict als Liste von Dicts unter dem Key "episodes" zu finden
+        (auch wieder als Dict mit Key = Episode-Basis-VID)
         """
         wb = self._load_workbook(path)
         return self._get_data_from_wb(wb)
