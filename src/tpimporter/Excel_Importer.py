@@ -13,6 +13,7 @@ class Excel_Importer:
     {'fieldname': column-number (integer), ...}
     the 2 callback signals can be used to report the status of the process back to the user
     """
+
     callback_status_signal = None
     callback_progress_signal = None
     tp_map = dict()
@@ -23,13 +24,11 @@ class Excel_Importer:
         """
         self.valid_statuses = valid_statuses
 
-
-
-    def register_callback_signals(self, callback_status_signal=None, callback_progress_signal=None):
+    def register_callback_signals(
+        self, callback_status_signal=None, callback_progress_signal=None
+    ):
         self.callback_status_signal = callback_status_signal
         self.callback_progress_signal = callback_progress_signal
-
-
 
     def callback_status(self, status: str):
         """
@@ -75,24 +74,28 @@ class Excel_Importer:
         :return:
         """
         try:
-            self.callback_status('reading data from TP')
+            self.callback_status("reading data from TP")
             self.callback_progress(0)
-            wb = load_workbook(path, read_only=True, data_only=True, keep_vba=False, keep_links=False)
+            wb = load_workbook(
+                path, read_only=True, data_only=True, keep_vba=False, keep_links=False
+            )
         except:
             # falls das Excel File passwortgeschützt ist schlägt der erste Versuch fehl;
             # dann muss erst das Passwort entfernt werden
-            TEMP_NAME = self._getTempDirName(tempFileName='temp_tp.xlsm')
-            self._removePasswordFromExcelFile(path, 'uf', TEMP_NAME)
-            self.callback_status('reading data from TP')
+            TEMP_NAME = self._getTempDirName(tempFileName="temp_tp.xlsm")
+            self._removePasswordFromExcelFile(path, "uf", TEMP_NAME)
+            self.callback_status("reading data from TP")
             wb = load_workbook(TEMP_NAME, read_only=True, data_only=True)
         self.callback_progress(20)
         return wb
 
-    def _get_data_from_wb(self,
-                          workbook: Workbook,
-                          first_row: int = 8,
-                          worksheet_name: str = "TP",
-                          channel_type='transactional') -> List[Dict]:
+    def _get_data_from_wb(
+        self,
+        workbook: Workbook,
+        first_row: int = 8,
+        worksheet_name: str = "TP",
+        channel_type="transactional",
+    ) -> List[Dict]:
         """
         fetches data from the given Excel Workbook instance
         :param workbook: a Workbook instance
@@ -104,13 +107,16 @@ class Excel_Importer:
         tp_data = []
         ws = workbook[worksheet_name]
         i = first_row
-        for row in ws['A' + str(first_row):'QF10000']:
+        for row in ws["A" + str(first_row) : "QF10000"]:
             try:
                 i += 1
-                if row[self.tp_map.get('tnr')].value and row[self.tp_map.get('status')].value in self.valid_statuses:
+                if (
+                    row[self.tp_map.get("tnr")].value
+                    and row[self.tp_map.get("status")].value in self.valid_statuses
+                ):
                     row_data = dict()
                     for key, col_nr in self.tp_map.items():
-                        if key == 'channel_type':
+                        if key == "channel_type":
                             row_data[key] = channel_type
                         else:
                             try:
@@ -120,19 +126,19 @@ class Excel_Importer:
                     tp_data.append(row_data)
 
             except:
-                self.callback_status(f'ERRROR reading in row nr: {i}')
+                self.callback_status(f"ERRROR reading in row nr: {i}")
         self.callback_progress(100)
-        self.callback_status('reading data from TP - COMPLETE')
+        self.callback_status("reading data from TP - COMPLETE")
         return tp_data
 
-    def _getTempDirName(self, tempFileName='temp_channel.xlsm') -> os.path:
+    def _getTempDirName(self, tempFileName="temp_channel.xlsm") -> os.path:
         """
         creates temp dir if not existing and returns path to dir and filename
         :param tempFileName: Filename for the temporary file
         :return:
         """
         workingdir = os.path.abspath(os.path.dirname(sys.argv[0]))
-        TEMP_DIR = os.path.join(workingdir, 'temp', '')
+        TEMP_DIR = os.path.join(workingdir, "temp", "")
         if not os.path.exists(TEMP_DIR):
             os.makedirs(TEMP_DIR)
         TEMP_NAME = os.path.join(TEMP_DIR, tempFileName)
@@ -148,11 +154,11 @@ class Excel_Importer:
         :param new_filepath: the new filepath where the file should be saved to (without password protection)
         :return:
         """
-        self.callback_status('removing Password')
+        self.callback_status("removing Password")
         try:
             file = msoffcrypto.OfficeFile(open(filepath, "rb"))
             # Use password
             file.load_key(password=pw_str)
-            file.decrypt(open(new_filepath, 'wb'))
+            file.decrypt(open(new_filepath, "wb"))
         except:
             self.callback_status(traceback.format_exc())

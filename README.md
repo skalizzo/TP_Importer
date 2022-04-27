@@ -56,7 +56,7 @@ for vendor_id, series in tqdm(tp_data.items()):
     # do something for series
     for vendor_id_season, season in series.get('seasons').items():
         # do something for seasons
-        for vendor_id_episode, episode in series.get('episodes').items():
+        for vendor_id_episode, episode in season.get('episodes').items():
             # do something for episodes
 ```
 
@@ -95,6 +95,6 @@ for channel_type, channel_titles in tp_data.items():
         # do something for series
         for vendor_id_season, season in series.get('seasons').items():
             # do something for seasons
-            for vendor_id_episode, episode in series.get('episodes').items():
+            for vendor_id_episode, episode in season.get('episodes').items():
                 # do something for episodes
 ```

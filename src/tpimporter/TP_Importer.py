@@ -3,7 +3,6 @@ from typing import List, Dict
 from .Excel_Importer import Excel_Importer
 
 
-
 class TP_Importer(Excel_Importer):
     callback_status_signal = None
     callback_progress_signal = None
@@ -68,7 +67,7 @@ class TP_Importer(Excel_Importer):
         "pf_status_itunes": 81,
         "pf_status_chili": 83,
         "pf_status_videoload": 84,
-        "pf_status_sony": 86, # wird nicht mehr benötigt
+        "pf_status_sony": 86,  # wird nicht mehr benötigt
         "pf_status_kino_on_demand": 87,
         "pf_status_microsoft": 88,
         "pf_status_vodafone": 90,
@@ -106,7 +105,7 @@ class TP_Importer(Excel_Importer):
         "vendor_id_cablecom": 113,
         "vendor_id_magenta_at": 112,
         "vendor_id_unitymedia": 111,
-        "vendor_id_alleskino": 0, # wird unten generiert aus VendorID
+        "vendor_id_alleskino": 0,  # wird unten generiert aus VendorID
         "ov": 144,
         "full_delete": 139,
         "full_delete_4k_amazon": 140,
@@ -154,12 +153,13 @@ class TP_Importer(Excel_Importer):
     def __init__(self, valid_statuses=("ok", "change", "new")):
         super().__init__(valid_statuses)
 
-
-    def _get_data_from_wb(self,
-                          workbook: Workbook,
-                          first_row: int = 8,
-                          worksheet_name: str = "TP",
-                          channel_type='transactional') -> List[Dict]:
+    def _get_data_from_wb(
+        self,
+        workbook: Workbook,
+        first_row: int = 8,
+        worksheet_name: str = "TP",
+        channel_type="transactional",
+    ) -> List[Dict]:
         """
         fetches data from the given Excel Workbook instance
         :param workbook: a Workbook instance
@@ -172,20 +172,25 @@ class TP_Importer(Excel_Importer):
         ws = workbook[worksheet_name]
         i = first_row
         max_row = ws.max_row
-        print('max_row:', max_row)
-        for row in ws['A' + str(first_row):'QF' + str(max_row)]:
+        print("max_row:", max_row)
+        for row in ws["A" + str(first_row) : "QF" + str(max_row)]:
             try:
                 # progress (20 % schon nach öffnen erreicht)
                 self.callback_progress(20 + int(i / max_row * 80))
                 i += 1
-                if row[self.tp_map.get('tnr')].value and row[self.tp_map.get('status')].value in self.valid_statuses:
+                if (
+                    row[self.tp_map.get("tnr")].value
+                    and row[self.tp_map.get("status")].value in self.valid_statuses
+                ):
                     row_data = dict()
                     for key, col_nr in self.tp_map.items():
-                        if key == 'channel_type':
+                        if key == "channel_type":
                             row_data[key] = channel_type
-                        elif key == 'vendor_id_alleskino':
-                            if row[self.tp_map.get('vendor_id')].value:
-                                row_data[key] = str(row[self.tp_map.get('vendor_id')].value) + "_AK"
+                        elif key == "vendor_id_alleskino":
+                            if row[self.tp_map.get("vendor_id")].value:
+                                row_data[key] = (
+                                    str(row[self.tp_map.get("vendor_id")].value) + "_AK"
+                                )
                             else:
                                 row_data[key] = ""
                         else:
@@ -199,12 +204,14 @@ class TP_Importer(Excel_Importer):
                     tp_data.append(row_data)
 
             except:
-                self.callback_status(f'ERRROR reading in row nr: {i}')
+                self.callback_status(f"ERRROR reading in row nr: {i}")
         self.callback_progress(100)
-        self.callback_status('reading data from TP - COMPLETE')
+        self.callback_status("reading data from TP - COMPLETE")
         return tp_data
 
 
-if __name__ == '__main__':
-    tp_data = TP_Importer().get_tp_data_from_file('G:\Listen\TPDD aktuell absolutiert.xlsm')
+if __name__ == "__main__":
+    tp_data = TP_Importer().get_tp_data_from_file(
+        "G:\Listen\TPDD aktuell absolutiert.xlsm"
+    )
     print(tp_data)

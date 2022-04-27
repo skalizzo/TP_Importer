@@ -10,11 +10,11 @@ class TVTP_Importer_Channels(Excel_Importer):
 
     # Hier können neue Channels hinzugefügt werden
     CHANNEL_TYPE_TV = {
-        'TV_Plan ACNMA': 'arthousecnma',
-        'TV_Plan HOH': 'homeofhorror',
-        'TV_Plan Filmtastic': 'filmtastic',
-        'TV_Plan Cinehearts': 'cinehearts',
-        'TV_Plan Filmlegenden': 'filmlegenden',
+        "TV_Plan ACNMA": "arthousecnma",
+        "TV_Plan HOH": "homeofhorror",
+        "TV_Plan Filmtastic": "filmtastic",
+        "TV_Plan Cinehearts": "cinehearts",
+        "TV_Plan Filmlegenden": "filmlegenden",
     }
 
     # SPECIFY FIELDNAMES AND CORRESPONDING EXCEL COLUMN NUMBERs HERE
@@ -43,7 +43,7 @@ class TVTP_Importer_Channels(Excel_Importer):
         "number": 7,
         "no_of_episodes": 11,
         "deal_type": 16,
-        #"mandant": 27,
+        # "mandant": 27,
         "license_start": 17,
         "license_end": 18,
         "genre": 41,
@@ -67,12 +67,11 @@ class TVTP_Importer_Channels(Excel_Importer):
         "pf_status_magenta_at": 58,
         "pf_status_rakuten": 59,
         # die folgenden Spalten gibt es noch nicht in der Channel-TP TV
-        #"pf_status_waipu": 90,
-        #"pf_status_zattoo": 91,
+        # "pf_status_waipu": 90,
+        # "pf_status_zattoo": 91,
         "country_de": 24,
         "country_at": 25,
         "country_ch": 26,
-
         "channel_type": 9999,  # wird nicht aus Excel gelesen
     }
 
@@ -119,16 +118,18 @@ class TVTP_Importer_Channels(Excel_Importer):
                 workbook=wb,
                 first_row=4,
                 worksheet_name=worksheet_name,
-                channel_type=channel_type
+                channel_type=channel_type,
             )
             channel_tp_data_tv[channel_type] = tp_data
         return channel_tp_data_tv
 
-    def _get_data_from_wb(self,
-                          workbook: Workbook,
-                          first_row: int = 4,
-                          worksheet_name: str = "TPTV",
-                          channel_type='') -> Dict:
+    def _get_data_from_wb(
+        self,
+        workbook: Workbook,
+        first_row: int = 4,
+        worksheet_name: str = "TPTV",
+        channel_type="",
+    ) -> Dict:
         """
         fetches data from the given Excel Workbook instance
         :param workbook: a Workbook instance
@@ -143,56 +144,68 @@ class TVTP_Importer_Channels(Excel_Importer):
         ws = workbook[worksheet_name]
         i = first_row
         max_row = ws.max_row
-        print('max_row:', max_row)
-        for row in ws['A' + str(first_row):'HB' + str(max_row)]:
+        print("max_row:", max_row)
+        for row in ws["A" + str(first_row) : "HB" + str(max_row)]:
             try:
                 # progress (20 % schon nach öffnen erreicht)
-                self.callback_progress(20 + int(i/max_row*80))
+                self.callback_progress(20 + int(i / max_row * 80))
 
                 # nur valide Items mit aktivem Status und einer Titelnummer nehmen
-                if row[self.tv_season_map.get('tnr')].value and row[
-                    self.tv_season_map.get('status')].value in self.valid_statuses:
+                if (
+                    row[self.tv_season_map.get("tnr")].value
+                    and row[self.tv_season_map.get("status")].value
+                    in self.valid_statuses
+                ):
                     # SERIES
-                    series_dict = self._get_row_data(row=row,
-                                                     item_map=self.tv_series_map,
-                                                     channel_type=channel_type)
-                    if not series_dict.get('vendor_id') in series_data.keys():
-                        series_data[series_dict.get('vendor_id')] = series_dict
+                    series_dict = self._get_row_data(
+                        row=row, item_map=self.tv_series_map, channel_type=channel_type
+                    )
+                    if not series_dict.get("vendor_id") in series_data.keys():
+                        series_data[series_dict.get("vendor_id")] = series_dict
 
                     # SEASONS
-                    if str(row[8].value).lower().strip() == 'x':
-                        season_data = self._get_row_data(row=row,
-                                                         item_map=self.tv_season_map,
-                                                         channel_type=channel_type)
-                        series = series_data.get(row[self.tv_series_map.get('vendor_id')].value)
-                        if not 'seasons' in series.keys():
-                            series['seasons'] = {
-                                season_data.get('vendor_id'): season_data
+                    if str(row[8].value).lower().strip() == "x":
+                        season_data = self._get_row_data(
+                            row=row,
+                            item_map=self.tv_season_map,
+                            channel_type=channel_type,
+                        )
+                        series = series_data.get(
+                            row[self.tv_series_map.get("vendor_id")].value
+                        )
+                        if not "seasons" in series.keys():
+                            series["seasons"] = {
+                                season_data.get("vendor_id"): season_data
                             }
                         else:
-                            series['seasons'][season_data.get('vendor_id')] = season_data
-
+                            series["seasons"][
+                                season_data.get("vendor_id")
+                            ] = season_data
 
                     # EPISODES
-                    episode_data = self._get_row_data(row=row,
-                                                           item_map=self.tv_episode_map,
-                                                           channel_type=channel_type)
-                    series = series_data.get(row[self.tv_series_map.get('vendor_id')].value)
-                    season = series.get('seasons').get(row[self.tv_season_map.get('vendor_id')].value)
-                    if not 'episodes' in season.keys():
-                        season['episodes'] = {
-                            episode_data.get('vendor_id'): episode_data
+                    episode_data = self._get_row_data(
+                        row=row, item_map=self.tv_episode_map, channel_type=channel_type
+                    )
+                    series = series_data.get(
+                        row[self.tv_series_map.get("vendor_id")].value
+                    )
+                    season = series.get("seasons").get(
+                        row[self.tv_season_map.get("vendor_id")].value
+                    )
+                    if not "episodes" in season.keys():
+                        season["episodes"] = {
+                            episode_data.get("vendor_id"): episode_data
                         }
                     else:
-                        season['episodes'][episode_data.get('vendor_id')] = episode_data
+                        season["episodes"][episode_data.get("vendor_id")] = episode_data
 
                 i += 1
 
             except:
-                self.callback_status(f'ERRROR reading in row nr: {i}')
+                self.callback_status(f"ERRROR reading in row nr: {i}")
 
         self.callback_progress(100)
-        self.callback_status('reading data from TP - COMPLETE')
+        self.callback_status("reading data from TP - COMPLETE")
         return series_data
 
     def _get_row_data(self, row, item_map: dict, channel_type: str) -> dict:
@@ -206,23 +219,22 @@ class TVTP_Importer_Channels(Excel_Importer):
         """
         row_data = dict()
         for key, col_nr in item_map.items():
-            if key == 'channel_type':
+            if key == "channel_type":
                 row_data[key] = channel_type
             else:
                 try:
                     row_data[key] = row[col_nr].value
-                    if row[col_nr].value == '#N/A':
+                    if row[col_nr].value == "#N/A":
                         row_data[key] = None
                 except:
                     row_data[key] = ""
         return row_data
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     channel_tp_data_feature = dict()
-    importer = TVTP_Importer_Channels(
-            valid_statuses=(("ok", "change", "new"))
-        )
-    path = 'G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
+    importer = TVTP_Importer_Channels(valid_statuses=(("ok", "change", "new")))
+    path = "G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm"
     tp_data = importer.get_tp_data_from_file(path)
     print(tp_data.keys())
     for channel_type, channel_titles in tp_data.items():
@@ -230,9 +242,11 @@ if __name__ == '__main__':
         for vendor_id, series in channel_titles.items():
             # do something for series
             print(series)
-            for vendor_id_season, season in series.get('seasons', dict()).items():
+            for vendor_id_season, season in series.get("seasons", dict()).items():
                 # do something for seasons
                 print(season)
-                for vendor_id_episode, episode in series.get('episodes', dict()).items():
+                for vendor_id_episode, episode in season.get(
+                    "episodes", dict()
+                ).items():
                     # do something for episodes
                     print(episode)

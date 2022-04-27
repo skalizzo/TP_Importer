@@ -5,9 +5,10 @@ class Adapter_For_MAM(Basic_Adapter):
     """
     a class used to alter the keys from the TP import so that the data can be used within MAM
     """
+
     transformer_dict = {
         "Tnr": "tnr",
-        "tnr_rechtefluss":"tnr_rechtefluss",
+        "tnr_rechtefluss": "tnr_rechtefluss",
         "tnr2": "tnr",
         "d_id": "did",
         "Status_TP": "status",
@@ -90,12 +91,12 @@ class Adapter_For_MAM(Basic_Adapter):
     }
     metadata_dict = {
         "VendorID": "vendor_id",
-        'IMDBlink': 'imdb_link',
-        'ISAN': 'isan',
-        'EIDR': 'eidr',
-        'Titel': 'titel_local',
-        'Originaltitel': 'titel_ov',
-        'trailer_link': 'trailer_link',
-        'pf_specific_id_sky': 'pf_specific_id_sky',
-        'so_number': 'so_number',
+        "IMDBlink": "imdb_link",
+        "ISAN": "isan",
+        "EIDR": "eidr",
+        "Titel": "titel_local",
+        "Originaltitel": "titel_ov",
+        "trailer_link": "trailer_link",
+        "pf_specific_id_sky": "pf_specific_id_sky",
+        "so_number": "so_number",
     }

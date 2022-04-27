@@ -5,6 +5,7 @@ class Adapter_For_VOD_Reporting_PyQt(Basic_Adapter):
     """
     a class used to alter the keys from the TP import so that the data can be used within MAM
     """
+
     transformer_dict = {
         "Tnr": "tnr",
         "Titelname": "titel_local",

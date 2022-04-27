@@ -7,9 +7,12 @@ class Basic_Adapter:
     each special class should have an instantiated transformer_dict in the following structure:
     {'db_field_name_for_program': 'key_from_tp_importer', ...}
     """
+
     transformer_dict = dict()
 
-    def transform(self, tp_data: List[Dict], transformer_dict: dict = None) -> List[Dict]:
+    def transform(
+        self, tp_data: List[Dict], transformer_dict: dict = None
+    ) -> List[Dict]:
         """
         transforms the given dictionaries to a form defined in the class variable
         :param tp_data: a list of dictionaries coming from the TP-Importer

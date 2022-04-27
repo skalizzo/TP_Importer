@@ -8,11 +8,11 @@ class TP_Importer_Channels(Excel_Importer):
     callback_progress_signal = None
 
     CHANNEL_TYPE_FEATURE = {
-        'Planung ACNMA': 'arthousecnma',
-        'Planung HOH': 'homeofhorror',
-        'Planung Filmtastic': 'filmtastic',
-        'Planung Cinehearts': 'cinehearts',
-        'Planung Filmlegenden': 'filmlegenden',
+        "Planung ACNMA": "arthousecnma",
+        "Planung HOH": "homeofhorror",
+        "Planung Filmtastic": "filmtastic",
+        "Planung Cinehearts": "cinehearts",
+        "Planung Filmlegenden": "filmlegenden",
     }
 
     tp_map = {
@@ -34,7 +34,7 @@ class TP_Importer_Channels(Excel_Importer):
         "country_de": 18,
         "country_at": 19,
         "country_ch": 20,
-        #"right_svod": 52,
+        # "right_svod": 52,
         # 'mandant'
         "pf_status_magenta_at": 88,
         "pf_status_rakuten": 89,
@@ -72,17 +72,18 @@ class TP_Importer_Channels(Excel_Importer):
                 workbook=wb,
                 first_row=4,
                 worksheet_name=worksheet_name,
-                channel_type=channel_type
+                channel_type=channel_type,
             )
             channel_tp_data_feature[channel_type] = tp_data
         return channel_tp_data_feature
 
-
-    def _get_data_from_wb(self,
-                          workbook: Workbook,
-                          first_row: int = 4,
-                          worksheet_name: str = "Planung_ACNMA",
-                          channel_type='arthousecnma') -> List[Dict]:
+    def _get_data_from_wb(
+        self,
+        workbook: Workbook,
+        first_row: int = 4,
+        worksheet_name: str = "Planung_ACNMA",
+        channel_type="arthousecnma",
+    ) -> List[Dict]:
         """
         fetches data from the given Excel Workbook instance
         :param workbook: a Workbook instance
@@ -95,16 +96,19 @@ class TP_Importer_Channels(Excel_Importer):
         ws = workbook[worksheet_name]
         i = first_row
         max_row = ws.max_row
-        print('max_row:', max_row)
-        for row in ws['A' + str(first_row):'QF' + str(max_row)]:
+        print("max_row:", max_row)
+        for row in ws["A" + str(first_row) : "QF" + str(max_row)]:
             try:
                 # progress (20 % schon nach öffnen erreicht)
                 self.callback_progress(20 + int(i / max_row * 80))
                 i += 1
-                if row[self.tp_map.get('tnr')].value and row[self.tp_map.get('status')].value in self.valid_statuses:
+                if (
+                    row[self.tp_map.get("tnr")].value
+                    and row[self.tp_map.get("status")].value in self.valid_statuses
+                ):
                     row_data = dict()
                     for key, col_nr in self.tp_map.items():
-                        if key == 'channel_type':
+                        if key == "channel_type":
                             row_data[key] = channel_type
                         else:
                             try:
@@ -117,17 +121,15 @@ class TP_Importer_Channels(Excel_Importer):
                     tp_data.append(row_data)
 
             except:
-                self.callback_status(f'ERRROR reading in row nr: {i}')
+                self.callback_status(f"ERRROR reading in row nr: {i}")
         self.callback_progress(100)
-        self.callback_status('reading data from TP_Channels - COMPLETE')
+        self.callback_status("reading data from TP_Channels - COMPLETE")
         return tp_data
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     channel_tp_data_feature = dict()
-    importer = TP_Importer_Channels(
-            valid_statuses=(("ok", "change", "new"))
-        )
-    path = 'G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
+    importer = TP_Importer_Channels(valid_statuses=(("ok", "change", "new")))
+    path = "G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm"
     tp_data = importer.get_tp_data_from_file(path)
     print(tp_data.keys())
