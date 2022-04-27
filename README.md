@@ -1,6 +1,6 @@
 # TP Importer
 
-This package is used for importing our main Titelplanung Excel file;
+This package is used for importing our main Titelplanung Excel files;
 <br>
 as this data is used in different systems this package provides adapters to use the imported data within different products
 <br>
@@ -20,37 +20,6 @@ def import_tp_data_for_mam():
 
 if __name__ == '__main__':
     tp_data_mam = import_tp_data_for_mam()
-```
-
-Usage Example for Channels (Feature):
-```
-channel_tp_data_feature = dict()
-importer = TP_Importer_Channels(
-        valid_statuses=(("ok", "change", "new"))
-    )
-wb = importer._load_workbook(
-    path='G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
-)
-for worksheet_name, channel_type in {
-    'Planung ACNMA': 'arthousecnma',
-    'Planung HOH': 'homeofhorror',
-    'Planung Filmtastic': 'filmtastic',
-    'Planung Cinehearts': 'cinehearts',
-    'Planung Filmlegenden': 'filmlegenden',
-}.items():
-    tp_data = importer._get_data_from_wb(
-        workbook=wb,
-        first_row=4,
-        worksheet_name=worksheet_name,
-        channel_type=channel_type
-    )
-    channel_tp_data_feature[channel_type] = tp_data
-    
-
-for channel_type, channel_titles in tp_data.items():
-    # durch alle Channels iterieren
-    for title in tqdm(channel_titles):
-        # durch Titel in jeweiligem Channel iterieren
 ```
 
 Usage Example for TVTP Transaktional:
@@ -89,4 +58,43 @@ for vendor_id, series in tqdm(tp_data.items()):
         # do something for seasons
         for vendor_id_episode, episode in series.get('episodes').items():
             # do something for episodes
+```
+
+Usage Example for Channels (Feature):
+```
+channel_tp_data_feature = dict()
+importer = TP_Importer_Channels(
+        valid_statuses=(("ok", "change", "new"))
+    )
+path = 'G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
+tp_data = importer.get_tp_data_from_file(path)
+print(tp_data.keys())
+    
+
+for channel_type, channel_titles in tp_data.items():
+    # durch alle Channels iterieren
+    for title in tqdm(channel_titles):
+        # durch Titel in jeweiligem Channel iterieren
+```
+
+Usage Example for Channels (TV):
+```
+channel_tp_data_feature = dict()
+importer = TVTP_Importer_Channels(
+        valid_statuses=(("ok", "change", "new"))
+    )
+path = 'G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
+tp_data = importer.get_tp_data_from_file(path)
+print(tp_data.keys())
+
+    
+
+for channel_type, channel_titles in tp_data.items():
+    # durch alle Channels iterieren
+    for vendor_id, series in tqdm(channel_titles.items()):
+        # do something for series
+        for vendor_id_season, season in series.get('seasons').items():
+            # do something for seasons
+            for vendor_id_episode, episode in series.get('episodes').items():
+                # do something for episodes
 ```

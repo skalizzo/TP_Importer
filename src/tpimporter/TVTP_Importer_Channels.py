@@ -225,3 +225,14 @@ if __name__ == '__main__':
     path = 'G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
     tp_data = importer.get_tp_data_from_file(path)
     print(tp_data.keys())
+    for channel_type, channel_titles in tp_data.items():
+        # durch alle Channels iterieren
+        for vendor_id, series in channel_titles.items():
+            # do something for series
+            print(series)
+            for vendor_id_season, season in series.get('seasons', dict()).items():
+                # do something for seasons
+                print(season)
+                for vendor_id_episode, episode in series.get('episodes', dict()).items():
+                    # do something for episodes
+                    print(episode)
