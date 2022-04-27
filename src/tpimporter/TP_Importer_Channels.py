@@ -1,12 +1,20 @@
 from openpyxl import Workbook
 from typing import List, Dict
-from .Excel_Importer import Excel_Importer
-
+from src.tpimporter import Excel_Importer
 
 
 class TP_Importer_Channels(Excel_Importer):
     callback_status_signal = None
     callback_progress_signal = None
+
+    CHANNEL_TYPE_FEATURE = {
+        'Planung ACNMA': 'arthousecnma',
+        'Planung HOH': 'homeofhorror',
+        'Planung Filmtastic': 'filmtastic',
+        'Planung Cinehearts': 'cinehearts',
+        'Planung Filmlegenden': 'filmlegenden',
+    }
+
     tp_map = {
         "status": 1,
         "did": 2,
@@ -50,6 +58,25 @@ class TP_Importer_Channels(Excel_Importer):
     def __init__(self, valid_statuses=("ok", "change", "new")):
         super().__init__(valid_statuses)
 
+    def get_tp_data_from_file(self, path) -> Dict[str, List[dict]]:
+        """
+        imports the Channel-Titelplanung xlsm from a given filepath (String or Path)
+        :param path: filepath (String or Path)
+        :return: a dict with channel types as keys and a list of dictionaries as value
+        (one dict for every title within the channel)
+        """
+        wb = self._load_workbook(path)
+        channel_tp_data_feature = dict()
+        for worksheet_name, channel_type in self.CHANNEL_TYPE_FEATURE.items():
+            tp_data = self._get_data_from_wb(
+                workbook=wb,
+                first_row=4,
+                worksheet_name=worksheet_name,
+                channel_type=channel_type
+            )
+            channel_tp_data_feature[channel_type] = tp_data
+        return channel_tp_data_feature
+
 
     def _get_data_from_wb(self,
                           workbook: Workbook,
@@ -61,7 +88,7 @@ class TP_Importer_Channels(Excel_Importer):
         :param workbook: a Workbook instance
         :param first_row: the first row where we should expect the data to begin
         :param worksheet_name: name of the worksheet that should be read
-        :param channel_type: possible values: transactional/filmtastic/arthousecnma/homeofhorror
+        :param channel_type: possible values: transactional/filmtastic/arthousecnma/homeofhorror/cinehearts/filmlegenden
         :return:
         """
         tp_data = []
@@ -101,22 +128,6 @@ if __name__ == '__main__':
     importer = TP_Importer_Channels(
             valid_statuses=(("ok", "change", "new"))
         )
-    wb = importer._load_workbook(
-        path='G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
-    )
-    for worksheet_name, channel_type in {
-        'Planung ACNMA': 'arthousecnma',
-        'Planung HOH': 'homeofhorror',
-        'Planung Filmtastic': 'filmtastic',
-        'Planung Cinehearts': 'cinehearts',
-        'Planung Filmlegenden': 'filmlegenden',
-    }.items():
-        tp_data = importer._get_data_from_wb(
-            workbook=wb,
-            first_row=4,
-            worksheet_name=worksheet_name,
-            channel_type=channel_type
-        )
-        print(tp_data)
-        channel_tp_data_feature[channel_type] = tp_data
-    print(channel_tp_data_feature.keys())
+    path = 'G:\Listen\Titelplanung Channels aktuell_absolutiert_new.xlsm'
+    tp_data = importer.get_tp_data_from_file(path)
+    print(tp_data.keys())
