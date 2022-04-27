@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from typing import List, Dict
-from src.tpimporter import Excel_Importer
+from .Excel_Importer import Excel_Importer
 
 
 class TP_Importer_Channels(Excel_Importer):
@@ -68,6 +68,7 @@ class TP_Importer_Channels(Excel_Importer):
         wb = self._load_workbook(path)
         channel_tp_data_feature = dict()
         for worksheet_name, channel_type in self.CHANNEL_TYPE_FEATURE.items():
+            print('reading data from', worksheet_name, channel_type)
             tp_data = self._get_data_from_wb(
                 workbook=wb,
                 first_row=4,
@@ -75,13 +76,14 @@ class TP_Importer_Channels(Excel_Importer):
                 channel_type=channel_type,
             )
             channel_tp_data_feature[channel_type] = tp_data
+        wb.close()
         return channel_tp_data_feature
 
     def _get_data_from_wb(
         self,
         workbook: Workbook,
         first_row: int = 4,
-        worksheet_name: str = "Planung_ACNMA",
+        worksheet_name: str = "",
         channel_type="arthousecnma",
     ) -> List[Dict]:
         """

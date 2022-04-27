@@ -65,7 +65,9 @@ class Excel_Importer:
         :return: a list of dicts (one dict per title)
         """
         wb = self._load_workbook(path)
-        return self._get_data_from_wb(wb)
+        tp_data = self._get_data_from_wb(wb)
+        wb.close()
+        return tp_data
 
     def _load_workbook(self, path) -> Workbook:
         """

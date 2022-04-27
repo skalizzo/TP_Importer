@@ -1,7 +1,7 @@
 from openpyxl import Workbook
-from typing import List, Dict, Tuple, Set
+from typing import Dict
 
-from src.tpimporter import Excel_Importer
+from .Excel_Importer import Excel_Importer
 
 
 class TVTP_Importer_Channels(Excel_Importer):
@@ -121,6 +121,7 @@ class TVTP_Importer_Channels(Excel_Importer):
                 channel_type=channel_type,
             )
             channel_tp_data_tv[channel_type] = tp_data
+        wb.close()
         return channel_tp_data_tv
 
     def _get_data_from_wb(

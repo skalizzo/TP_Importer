@@ -1,6 +1,6 @@
 from .Excel_Importer import Excel_Importer
 from openpyxl import Workbook
-from typing import List, Dict, Tuple, Set
+from typing import Dict
 
 
 class TVTP_Importer(Excel_Importer):
@@ -114,7 +114,9 @@ class TVTP_Importer(Excel_Importer):
         (auch wieder als Dict mit Key = Episode-Basis-VID)
         """
         wb = self._load_workbook(path)
-        return self._get_data_from_wb(wb)
+        tp_data = self._get_data_from_wb(wb)
+        wb.close()
+        return tp_data
 
     def _get_data_from_wb(
         self,
