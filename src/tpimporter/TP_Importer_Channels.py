@@ -31,6 +31,7 @@ class TP_Importer_Channels(Excel_Importer):
         "pf_status_magenta_at": 88,
         "pf_status_rakuten": 89,
         "pf_status_waipu": 90,
+        "pf_status_zattoo": 91,
         "pf_status_amazon": 86,
         "pf_status_standalone": 87,
         "studio": 44,
