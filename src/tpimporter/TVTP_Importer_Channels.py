@@ -24,6 +24,7 @@ class TVTP_Importer_Channels(Excel_Importer):
         "vendor_id": 53,
         "vendor_id_amazon": 46,
         "vendor_id_standalone": 92,
+        "vendor_id_canalplus": 92,  # genauso wie Standalone weil Belieferung durch Simpletechs
         # die folgenden Spalten gibt es noch nicht in der Channel-TP TV
         # "vendor_id_wuaki": 46,
         # "vendor_id_zattoo": 47,
@@ -57,6 +58,7 @@ class TVTP_Importer_Channels(Excel_Importer):
         "vendor_id": 52,
         "vendor_id_amazon": 45,
         "vendor_id_standalone": 91,
+        "vendor_id_canalplus": 91, # genauso wie Standalone weil Belieferung durch Simpletechs
         # die folgenden Spalten gibt es noch nicht in der Channel-TP TV
         # "vendor_id_wuaki": 46,
         # "vendor_id_zattoo": 47,
@@ -67,8 +69,9 @@ class TVTP_Importer_Channels(Excel_Importer):
         "pf_status_magenta_at": 58,
         "pf_status_rakuten": 59,
         # die folgenden Spalten gibt es noch nicht in der Channel-TP TV
-        # "pf_status_waipu": 90,
-        # "pf_status_zattoo": 91,
+        "pf_status_waipu": 60,
+        "pf_status_zattoo": 61,
+        "pf_status_canalplus": 62,
         "country_de": 24,
         "country_at": 25,
         "country_ch": 26,
@@ -88,6 +91,7 @@ class TVTP_Importer_Channels(Excel_Importer):
         "vendor_id": 51,
         "vendor_id_amazon": 44,
         "vendor_id_standalone": 90,
+        "vendor_id_canalplus": 90,  # genauso wie Standalone weil Belieferung durch Simpletechs
         # die folgenden Spalten gibt es noch nicht in der Channel-TP TV
         # "vendor_id_wuaki": 46,
         # "vendor_id_zattoo": 47,

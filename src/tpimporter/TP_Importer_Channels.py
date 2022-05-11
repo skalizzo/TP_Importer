@@ -40,6 +40,7 @@ class TP_Importer_Channels(Excel_Importer):
         "pf_status_rakuten": 89,
         "pf_status_waipu": 90,
         "pf_status_zattoo": 91,
+        "pf_status_canalplus": 91,
         "pf_status_amazon": 86,
         "pf_status_standalone": 87,
         "studio": 44,
@@ -48,6 +49,7 @@ class TP_Importer_Channels(Excel_Importer):
         "vendor_id_wuaki": 46,
         "vendor_id_zattoo": 47,
         "vendor_id_standalone": 48,
+        "vendor_id_canalplus": 48, # auch Standalone weil Lieferung über Simpletechs'
         "vendor_id_waipu": 49,
         "vendor_id_magenta_at": 50,
         "channel_category": 55,
